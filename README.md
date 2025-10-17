@@ -35,3 +35,21 @@ git add LinuxServer/*
 git commit "Add new VM + Automatizace"
 git push
 ```
+
+##Dokumentace Miroslav Puš, 10.10.2025
+
+-ve repository jsem si vytvořil složku Server, do které jsem se před příkazový řádek dostal a pomocí "vagrant init" vytvořil Vagrantfile
+-do Vagrantfile jsem vložil základní konfiguraci Debian a upravil port na 80-8080 a do příkazového řádku napsal "vagrant up"
+-pomocí "vagrant ssh-config" jsem našel lokaci klíče, který jsem pomocí PuttyGen upravil na veřejný a přidal ho do složky k Vagrantfile
+-do Vagrantfile jsem přidal:  "config.vm.provision "file", source: "ssh.pub", destination: "~/.ssh/me.pub" " a "cat /home/vagrant/.ssh/me.pub >> /home/vagrant/.ssh/authorized_keys"
+-vytvořil jsem i soukromý klíč kvůli automatickému přihlášení do putty
+-poté jsem použil:
+        sudo apt update -y
+        sudo apt install -y apache2
+        sudo systemctl enable apache2
+        sudo systemctl start apache2
+        if command -v ufw >/dev/null 2>&1; then
+            sudo ufw allow 'Apache'
+        fi
+tímto jsem stáhnul a povolil Apache2
+-jestli Apache funguje jsem ověřil tím, že jsem napsal "localhost:8080" do prohlížeče
